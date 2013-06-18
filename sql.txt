@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS `ean2id` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ean` varchar(64) NOT NULL,
+  `productid` varchar(64) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ean` (`ean`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
