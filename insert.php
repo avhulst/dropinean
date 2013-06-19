@@ -23,9 +23,9 @@
  
  $ean2id->connect();
  
- $lid = $ean2id->insert("insert into ean2id (ean,productid) values ('$ean','$pid') ON DUPLICATE KEY UPDATE productid='$pid'");
+ $res = $ean2id->insertEAN($ean,$pid);
  
- echo '<div id="result">LETZE ID: '.$lid.'</div>';
+ echo '<div id="result">'.$res.'</div>';
  $ean2id->disconnect(); 
  
  ?>
