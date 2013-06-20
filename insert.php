@@ -21,6 +21,8 @@
  $ean = $_REQUEST['ean'];
  $pid = $_REQUEST['pid'];
  
+ $pid = substr($pid,0,-2);
+ 
  $ean2id->connect();
  
  $res = $ean2id->insertEAN($ean,$pid);
