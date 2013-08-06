@@ -86,6 +86,38 @@
   			 } //ENDE FOR
 		} //ENDE FOR
 	 }
+
+	/* SKU <-> EAN Tabelle erstellen 
+	 * Alle Größen erhalten eine eigene SKU und eine zugehörige EAN
+	 * Wichtig für Amazon & Co
+	 * */
+	public function SkuEanTable () 
+	{
+		//ean2id tabelle lesen
+		$sql = "SELECT * FROM ean2id";
+		$this->query($sql);
+		$res = $this->fetchRows();	
+		
+		foreach ($res as $val)
+		{
+			#echo $val['ean']." - ".$val['productid']." <br>\n";
+			
+			$this->query('SELECT sku,size FROM productdata WHERE ident = ' . $val['productid']);
+			$prod = $this->fetchRow();
+			if($prod['size'])
+			{
+				$sku = $prod['sku'] . "-" . $prod['size'];				
+			}
+			
+			if($val['productid'] && $val['ean'])
+			{
+				#echo "$sku - ".$val['ean']."<br>\n";
+				$this->insert("INSERT INTO ean (ean,sku) VALUES ('".$val['ean']."','".$sku."') ON DUPLICATE KEY UPDATE sku='".$sku."'");
+			}
+				
+		}
+		
+	} 
  }
  
  
