@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS `ean2id` (
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ean` (`ean`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 CREATE TABLE  `dropinean`.`ProductData` (
 `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
@@ -24,3 +24,11 @@ UNIQUE (
 `ident`
 )
 ) ENGINE = INNODB;
+
+CREATE TABLE IF NOT EXISTS `ean` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ean` varchar(48) NOT NULL,
+  `sku` varchar(72) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sku` (`sku`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
