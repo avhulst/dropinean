@@ -1,3 +1,4 @@
 # Folgende Dateien und Ordner nicht verwenden
 ./test/
 .projecttest
+tmp/ProductData.xml
