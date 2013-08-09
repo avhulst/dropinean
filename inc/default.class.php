@@ -26,10 +26,18 @@
 			if($lid>0) {
 				$this->query($sql);
 				$res = $this->fetchRow();
+                
+                //Ean direkt in Ean Tabelle eintragen
+                $this->SkuEanAddOne($pid,$ean);
+                 
 				return "<h2>Neuer Datensatz (" .$res['SKU'] . ")</h2> <p style='font-size: 14pt;'>" .$res['Name'] . " <br>\nGröße:" . $res['Size'] ." <br>\nEAN: $ean</p>\n";
 			} else {
 				$this->query($sql);
 				$res = $this->fetchRow();
+                
+                //Ean direkt in Ean Tabelle Updaten
+                $this->SkuEanAddOne($pid,$ean);
+                
 				return "<h2>Update Datensatz (" .$res['SKU'] . ")</h2> <p style='font-size: 14pt;'>" .$res['Name'] . " <br>\nGröße:" . $res['Size'] ." <br>\nEAN: $ean</p>\n";
 			}
 	 	} else {
@@ -118,7 +126,91 @@
 		}
 		
 	} 
+	
+	/* SKU <-> EAN einzeln eintragen
+     * z.B. wärend dem scannen.
+     */
+	public function SkuEanAddOne ($ident,$ean) 
+    {
+         $this->query('SELECT sku,size FROM productdata WHERE ident = ' . $ident);
+         $prod = $this->fetchRow();
+         if($prod['size'])
+         {
+             $sku = $prod['sku'] . "-" . $prod['size'];              
+         }
+         
+         if($ident && $ean)
+         {
+             #echo "$sku - ".$val['ean']."<br>\n";
+             $this->insert("INSERT INTO ean (ean,sku) VALUES ('".$ean."','".$sku."') ON DUPLICATE KEY UPDATE sku='".$sku."'");
+         }        
+    }
  }
  
+ class snippets 
+ {     
+    public function TrenneStrasseNr ($street) 
+    {
+    $streetar = preg_split('/[0-9]/', $street);
+    $streetnr = str_replace($streetar[0], "", $street);
+    return array("Name" => $this->BereinigeStrassenNamen($streetar[0]), "Nummer" => $this->BereinigeStrassenNamen($streetnr));
+    }
+    
+    public function EntferneLeerzeichenAmSrtingEnde ($str)
+    {
+        while (substr($str, -1 ) == " ") {
+            $str = substr($str, 0, -1);
+        }
+        
+        return $str;
+    }
+
+    public function EntferneLeerzeichenAmSrtingAnfang ($str)
+    {
+        while (substr($str,0, 1) == " ") {
+            $str = substr($str, 1);
+        }
+        
+        return $str;
+    }
+    
+    public function BereinigeStrassenNamen ($str)
+    {
+        $str = $this->EntferneLeerzeichenAmSrtingAnfang($str);
+        $str = $this->EntferneLeerzeichenAmSrtingEnde($str);
+        return $str;
+    }    
+    
+    /* Datum 
+     * Eingabe $ts = mktime($stunde,$minute,$sekunde,$monat,$tag,$jahr);  
+     */
+    public function Datum ($Stunde="",$Minute="",$Sekunde="",$Monat="",$Tag="",$Jahr="",$Zeitzone="Europe/Berlin",$Sprache="de_DE") 
+    {
+        setlocale(LC_TIME, "de_DE");  
+        date_default_timezone_set($Zeitzone);
+        if($Stunde && $Minute && $Sekunde && $Monat && $Tag && $Jahr)    
+        {
+            $Datum = mktime($Stunde,$Minute,$Sekunde,$Monat,$Tag,$Jahr);
+            $MySQL_Datum = date('Y-m-d H:i:s', $Datum);
+        }
+        else { $MySQL_Datum = ""; }
+        
+        $MySQL_Datum_Now = date('Y-m-d H:i:s'); 
+        $Datum1 = date('d.m.Y');
+        $Datum2 = date('D.m.Y');
+        $Datum3 = strftime("%A %B %Y");
+        
+        $Datum_Zeit1 = date('d.m.Y H:i:s'); 
+        
+        $ret = array("MySQL_Datum" =>$MySQL_Datum,
+                     "MySQL_Datum_Now" => $MySQL_Datum_Now,
+                     "Datum1" => $Datum1,
+                     "Datum2" => $Datum2,
+                     "Datum3" => $Datum3,
+                     "Datum_Zeit1" => $Datum_Zeit1);
+        
+        return $ret;   
+    } 
+ }
  
 ?>
