@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS `ean2id` (
   UNIQUE KEY `ean` (`ean`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
-CREATE TABLE  `dropinean`.`ProductData` (
+CREATE TABLE  `dropinean`.`productdata` (
 `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 `sku` VARCHAR( 128 ) NOT NULL ,
 `price` FLOAT NOT NULL ,
