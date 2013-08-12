@@ -59,6 +59,7 @@
 		
 		#echo "Produktzeilen in der XML:".count($result) . "<br>\n";
 		$artikelcount = 0;
+		$cc=0;
 		for($i=0; $i<count($result); $i++) {
 			// Artikel Stammlaten Lesen
    			$g_stock = 0;
@@ -72,6 +73,7 @@
                       
 			$res_article = count($result[$i]->model->article);
    			for($a=0; $a<$res_article; $a++) {
+   				$cc++;
    				$artikelcount++;
    				// Artikel IDENT & Size sovie Lager Lesen
    				// mit Stammdaten aufarbeiten und in Datenbank schreiben

@@ -26,7 +26,10 @@ class MyMySQL {
 	
 	function debug ($message) {
 		if($this->debugger==true) {
-			var_dump($message);
+			if(strlen($message)>0)
+			{
+				var_dump($message);
+			}
 		}
 	}
 	
@@ -48,6 +51,7 @@ class MyMySQL {
 	
 	public function insert($query) {
   		$this->result=mysql_query($query,$this->connection);
+		$this->debug(mysql_error());
   		return mysql_insert_id();		
 	}
 	
