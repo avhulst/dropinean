@@ -2,3 +2,4 @@
 ./test/
 .projecttest
 tmp/ProductData.xml
+.project
